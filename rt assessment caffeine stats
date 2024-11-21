@@ -1,0 +1,26 @@
+import pandas as pd
+import numpy as np
+
+sheets = ['2019','2020','2021','2022','2023']
+datadict = pd.read_excel('/Users/anji/Downloads/all data combined.xlsx', sheet_name = sheets)
+
+datalist = []
+
+#append all sheets to list (not under any name, just adding the raw data)
+for i in sheets:
+    datalist.append(datadict.get(i))
+
+for i in datalist:
+    caf = i.loc[i['caffeine'] == 'c']
+    decaf = i.loc[i['caffeine'] == 'd']
+
+    print('caf n:', len(caf))
+    print('decaf n:', len(decaf))
+    for i in ['RTAM', 'RTPM']:
+        print('\n',i)
+        q2 = np.mean(caf[i])
+        print('caf mean: ', np.around(q2,decimals = 2))
+        print('caf std: ', np.around(np.std(caf[i]), decimals=2))
+
+        print('decaf mean: ', np.around(np.mean(decaf[i]),decimals=2))
+        print('decaf std: ', np.around(np.std(decaf[i]),decimals = 2), '\n')

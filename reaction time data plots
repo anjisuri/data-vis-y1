@@ -1,0 +1,26 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+import numpy as np
+
+RT = pd.read_excel(io = '/Users/anji/Desktop/do things/python/data vis/RTdata.xlsx',dtype={'subject':int, 'morning':int,'evening':int})
+
+fig = plt.figure()
+'''sns.set_context('paper', font_scale = 1.5)
+sns.distplot(RT['morning'], kde=True, bins = 15)
+sns.jointplot(x='morning', y='evening',data= RT, kind = 'reg')'''
+
+
+plt.figure(figsize=(12,7))
+morn = sns.kdeplot(RT['morning'],label = 'morning')
+eve = sns.kdeplot(RT['evening'], label = 'evening')
+fig.subplots_adjust(left = .15, bottom=.15)
+plt.title('how time of day affects reaction time')
+
+
+morn.set(xlabel = 'reaction time', ylabel = 'density')
+
+plt.legend()
+
+
+plt.show()

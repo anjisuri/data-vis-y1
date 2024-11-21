@@ -1,0 +1,90 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+import numpy as np
+
+sheets = ['2019','2020','2021','2022','2023']
+datadict = pd.read_excel('/Users/anji/Downloads/all data combined.xlsx', sheet_name = sheets)
+
+datalist = []
+
+'''#assign each year to a var
+df19 = datadict.get('2019')
+df20 = datadict.get('2020')
+df21 = datadict.get('2021')
+df22 = datadict.get('2022')
+df23 = datadict.get('2023')'''
+
+#append all sheets to list (not under any name, just adding the raw data)
+for i in sheets:
+    datalist.append(datadict.get(i))
+
+'''#rtam and rtpm for each caffeinated (+ can switch to decaf)
+n = 0 
+fig = plt.figure()
+for i in datalist:
+    newdf = i.loc[i['caffeine'] == 'c']
+    #sns.distplot(newdf['RTAM'], bins = 25, kde = False)
+    sns.boxplot(newdf['RTPM'])
+    plt.xlabel('Evening Reaction Time')
+    #plt.ylabel('Frequency Density')
+    title = str(2019 + n) + ' - Caffeine'
+    plt.title(title)
+    n = n + 1
+    plt.show()'''
+
+n = 0
+for i in datalist:
+    fig, ax = plt.subplots(figsize = (6,2))
+    ax.set_xlim(50,950)
+
+    caf = i.loc[i['caffeine'] == 'c']
+    decaf = i.loc[i['caffeine'] == 'd']
+
+    sns.boxplot(x=i['RTAM'], y=i['caffeine'], order=['c','d'], palette='Greens', 
+                width = 0.8, fill = False, gap = 0.5, native_scale= True)
+    ax.set_title('Morning RT of caffeinated & non-caffeinated students')
+    ax.set_ylabel(ylabel=2019 + n)
+    ax.xaxis.grid(True)
+    ax.set_yticklabels(['Caf','Decaf'])
+    plt.tight_layout()
+    plt.show()
+    n += 1
+
+
+'''#stats
+print('\nmeans:')
+for i in datalist:
+    q2 = np.mean(i['RTPM'])
+    print(q2)
+print('\nmedians:')
+for i in datalist:
+    print(np.median(i['RTPM']))
+print('\nstandard deviations:')
+for i in datalist:
+    print(np.std(i['RTPM']))
+print('\noutliers:')
+for i in datalist:
+    q1 = np.percentile(i['RTPM'], 25)
+    q3 = np.percentile(i['RTPM'], 75)
+    iqr = q3 - q1
+    lb = q1 - iqr
+    ub = q3 + iqr
+    outliers = []
+    for n in i['RTPM']:
+        if n > ub or n < lb:
+            outliers.append(n)
+    print(sorted(outliers))
+
+    for n in i['RTPM']:
+        if n > ub or n < lb and n in i['gamer'] == 'g':
+            outliers.append(n)
+    print('gamers: ', sorted(outliers))
+    outliers = []
+    for n in i['RTPM']:
+        if n > ub or n < lb and n in i['gamer'] == 'n':
+            outliers.append(n)
+    print('non-gamers: ', sorted(outliers))'''
+
+
+
